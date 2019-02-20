@@ -108,17 +108,6 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 
 /***/ }),
 
-/***/ "./src/game.js":
-/*!*********************!*\
-  !*** ./src/game.js ***!
-  \*********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("class Game {\n\n  static panVel() {\n    return 5;\n  }\n\n}\n\n\n//# sourceURL=webpack:///./src/game.js?");
-
-/***/ }),
-
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -127,7 +116,7 @@ eval("class Game {\n\n  static panVel() {\n    return 5;\n  }\n\n}\n\n\n//# sour
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ \"./src/player.js\");\n\n// import Game from './game'\n\n\n\nnew p5__WEBPACK_IMPORTED_MODULE_0__(function( game ) {\n\n  game.setup = function() {\n    game.createCanvas(game.windowWidth, game.windowHeight)\n    game.player = new _player__WEBPACK_IMPORTED_MODULE_1__[\"default\"](game, game.windowWidth, game.windowHeight)\n    game.frameRate(60);\n  };\n\n  game.draw = function() {\n    game.background(102)\n    game.player.render()\n  };\n\n\n})\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ \"./src/player.js\");\n\n// import Game from './game'\n\n\n\nnew p5__WEBPACK_IMPORTED_MODULE_0__(function( game ) {\n\n  game.setup = function() {\n    game.createCanvas(game.windowWidth, game.windowHeight)\n    game.player = new _player__WEBPACK_IMPORTED_MODULE_1__[\"default\"](game, game.windowWidth, game.windowHeight)\n    game.frameRate(60);\n    console.log('Setup done');\n  };\n\n  game.draw = function() {\n    game.background(102)\n    game.player.render()\n  };\n\n  game.mouseClicked = function() {\n    game.player.flap()\n  }\n\n})\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 
@@ -139,7 +128,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var p5__
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Player; });\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game */ \"./src/game.js\");\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_game__WEBPACK_IMPORTED_MODULE_1__);\n\n\n\nclass Player {\n\n  constructor(game, size) {\n    this.game = game\n    this.windowWidth = game.windowWidth\n    this.windowHeight = game.windowHeight\n    this.x = this.windowWidth / 5\n    this.y = this.windowHeight / 2\n    this.size = 50\n    this.velY = 0\n    this.velx = _game__WEBPACK_IMPORTED_MODULE_1___default.a.panVel\n  }\n\n  render() {\n    this.game.ellipse(this.x, this.y, this.size)\n    this.y += this.windowHeight / 100\n  }\n}\n\n\n//# sourceURL=webpack:///./src/player.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Player; });\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n\n\nclass Player {\n\n  constructor(game, size) {\n    this.game = game\n    this.windowWidth = game.windowWidth\n    this.windowHeight = game.windowHeight\n    this.x = this.windowWidth / 5\n    this.y = this.windowHeight / 2\n    this.size = 50\n    this.velY = 1\n    this.velx = 20\n    this.gravity = this.windowHeight / 100 * 0.1\n  }\n\n  render() {\n    this.game.ellipse(this.x, this.y, this.size)\n    this.y += this.velY\n    this.velY += this.gravity\n  }\n\n  flap() {\n    this.velY = -20 * this.gravity\n  }\n}\n\n\n//# sourceURL=webpack:///./src/player.js?");
 
 /***/ })
 
