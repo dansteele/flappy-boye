@@ -9,6 +9,7 @@ new p5(function( game ) {
     game.createCanvas(game.windowWidth, game.windowHeight)
     game.player = new Player(game, game.windowWidth, game.windowHeight)
     game.frameRate(60);
+    console.log('Setup done');
   };
 
   game.draw = function() {
@@ -16,5 +17,8 @@ new p5(function( game ) {
     game.player.render()
   };
 
+  game.mouseClicked = function() {
+    game.player.flap()
+  }
 
 })

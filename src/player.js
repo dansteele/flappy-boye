@@ -1,5 +1,4 @@
 import * as p5 from 'p5'
-import Game from './game'
 
 export default class Player {
 
@@ -10,12 +9,18 @@ export default class Player {
     this.x = this.windowWidth / 5
     this.y = this.windowHeight / 2
     this.size = 50
-    this.velY = 0
-    this.velx = Game.panVel
+    this.velY = 1
+    this.velx = 20
+    this.gravity = this.windowHeight / 100 * 0.1
   }
 
   render() {
     this.game.ellipse(this.x, this.y, this.size)
-    this.y += this.windowHeight / 100
+    this.y += this.velY
+    this.velY += this.gravity
+  }
+
+  flap() {
+    this.velY = -20 * this.gravity
   }
 }
