@@ -15,12 +15,14 @@ export default class Player {
   }
 
   render() {
+    this.game.setFillColor(252, 247, 93)
     this.game.ellipse(this.x, this.y, this.size)
     this.y += this.velY
     this.velY += this.gravity
   }
 
+  // Mostly a hard-reset of momentum, but take some momentum in to account
   flap() {
-    this.velY = -20 * this.gravity
+    this.velY = (-20 * this.gravity) + 0.3 * this.velY
   }
 }
