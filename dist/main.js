@@ -108,6 +108,18 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 
 /***/ }),
 
+/***/ "./src/coordinator.js":
+/*!****************************!*\
+  !*** ./src/coordinator.js ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Coordinator; });\nclass Coordinator {\n\n  static get groundHeight() { return 40 }\n\n  get topOfGround() { return this.windowHeight - Coordinator.groundHeight }\n\n  constructor(player, game) {\n    this.player = player\n    this.game = game\n    this.ticks = 0\n    this.windowWidth = game.windowWidth\n    this.windowHeight = game.windowHeight\n  }\n\n  tick() {\n    this.ticks += 1\n    this.drawBackground()\n    this.renderPlayer()\n    this.renderPylons()\n    if (this.detectFailure()) { return this.end() }\n    this.setScore()\n    this.player.accellerate()\n  }\n\n  renderPlayer() {\n    this.game.setFillColor(252, 247, 93)\n    this.game.ellipse(this.player.x, this.player.y, this.player.size)\n  }\n\n  renderPylons() {\n    this.game.setFillColor(57, 221, 95)\n    this.game.rect(\n      this.windowWidth - 5 * this.ticks, //  < --- -- > direction\n      500, // ^ height\n      100, // <> width\n      500 // length\n    )\n  }\n\n  drawBackground() {\n    this.game.background(232, 250, 255)\n    this.game.setFillColor(117, 71, 55)\n    this.game.rect(\n      0,\n      this.windowHeight - Coordinator.groundHeight,\n      this.windowWidth,\n      Coordinator.groundHeight\n    )\n  }\n\n  mouseClicked() {\n    this.player.flap()\n  }\n\n  setScore() {\n    this.score = (this.ticks / 6).toFixed(1)\n    console.log(this.score);\n  }\n\n  detectFailure() {\n    if (this.hasHitGround()) { return true }\n    return false\n  }\n\n  hasHitGround() {\n    return this.player.y + this.player.size / 2 > this.topOfGround\n  }\n\n  end() {\n    console.log('Game over')\n    return this.game.noLoop()\n  }\n\n}\n\n\n//# sourceURL=webpack:///./src/coordinator.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -116,7 +128,7 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ \"./src/player.js\");\n\n// import Game from './game'\n\n\n\nnew p5__WEBPACK_IMPORTED_MODULE_0__(function( game ) {\n\n  game.setup = function() {\n    game.createCanvas(game.windowWidth, game.windowHeight)\n    game.player = new _player__WEBPACK_IMPORTED_MODULE_1__[\"default\"](game, game.windowWidth, game.windowHeight)\n    game.frameRate(60);\n    console.log('Setup done');\n  };\n\n  game.draw = function() {\n    game.background(102)\n    game.player.render()\n  };\n\n  game.mouseClicked = function() {\n    game.player.flap()\n  }\n\n})\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ \"./src/player.js\");\n/* harmony import */ var _coordinator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./coordinator */ \"./src/coordinator.js\");\n\n// import Game from './game'\n\n\n\n\nnew p5__WEBPACK_IMPORTED_MODULE_0__(function( game ) {\n\n  game.setup = function() {\n    const player = new _player__WEBPACK_IMPORTED_MODULE_1__[\"default\"](game.windowWidth, game.windowHeight)\n    game.coordinator = new _coordinator__WEBPACK_IMPORTED_MODULE_2__[\"default\"](player, game)\n    game.createCanvas(game.windowWidth, game.windowHeight)\n    game.frameRate(60);\n    console.log('Setup done');\n  };\n\n  game.draw = function() {\n    game.coordinator.tick()\n  };\n\n  game.mouseClicked = () => { game.coordinator.mouseClicked() }\n\n  game.setFillColor = function(r, g, b) {\n    game.fill(game.color(r, g, b))\n  }\n})\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 
@@ -128,7 +140,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var p5__
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Player; });\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n\n\nclass Player {\n\n  constructor(game, size) {\n    this.game = game\n    this.windowWidth = game.windowWidth\n    this.windowHeight = game.windowHeight\n    this.x = this.windowWidth / 5\n    this.y = this.windowHeight / 2\n    this.size = 50\n    this.velY = 1\n    this.velx = 20\n    this.gravity = this.windowHeight / 100 * 0.1\n  }\n\n  render() {\n    this.game.ellipse(this.x, this.y, this.size)\n    this.y += this.velY\n    this.velY += this.gravity\n  }\n\n  flap() {\n    this.velY = -20 * this.gravity\n  }\n}\n\n\n//# sourceURL=webpack:///./src/player.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Player; });\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n\n\nclass Player {\n\n  constructor(windowWidth, windowHeight) {\n    this.windowWidth = windowWidth\n    this.windowHeight = windowHeight\n    this.x = windowWidth / 5\n    this.y = windowHeight / 2\n    this.size = 50\n    this.velY = 1\n    this.velx = 20\n    this.gravity = this.windowHeight / 100 * 0.1\n  }\n\n  // Mostly a hard-reset of momentum, but take some momentum in to account\n  flap() {\n    this.velY = (-20 * this.gravity) + 0.3 * this.velY\n  }\n\n  accellerate() {\n    this.y += this.velY\n    this.velY += this.gravity\n  }\n}\n\n\n//# sourceURL=webpack:///./src/player.js?");
 
 /***/ })
 

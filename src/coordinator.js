@@ -16,6 +16,7 @@ export default class Coordinator {
     this.ticks += 1
     this.drawBackground()
     this.renderPlayer()
+    this.renderPylons()
     if (this.detectFailure()) { return this.end() }
     this.setScore()
     this.player.accellerate()
@@ -24,6 +25,16 @@ export default class Coordinator {
   renderPlayer() {
     this.game.setFillColor(252, 247, 93)
     this.game.ellipse(this.player.x, this.player.y, this.player.size)
+  }
+
+  renderPylons() {
+    this.game.setFillColor(57, 221, 95)
+    this.game.rect(
+      this.windowWidth - 5 * this.ticks, //  < --- -- > direction
+      500, // ^ height
+      100, // <> width
+      500 // length
+    )
   }
 
   drawBackground() {
